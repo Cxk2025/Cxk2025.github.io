@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>满屏飘字</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden; /* 隐藏溢出内容 */
+            background-color: #000; /* 背景黑色更醒目 */
+        }
+        .float-text {
+            position: absolute;
+            color: #fff; /* 文字白色 */
+            font-size: 24px;
+            font-weight: bold;
+            pointer-events: none; /* 文字不遮挡鼠标 */
+            transition: transform 0.1s linear;
+        }
+    </style>
+</head>
+<body>
+    <script>
+        // 要显示的文字内容
+        const textList = ["飘字1", "飘字2", "你好", "满屏", "动态文字", "Hello"];
+        const bodyWidth = window.innerWidth;
+        const bodyHeight = window.innerHeight;
+        const textCount = 20; // 同时显示的文字数量
+
+        // 创建飘字元素
+        function createFloatText() {
+            const text = document.createElement("div");
+            text.className = "float-text";
+            // 随机选文字
+            text.innerText = textList[Math.floor(Math.random() * textList.length)];
+            // 随机初始位置
+            text.style.left = `${Math.random() * bodyWidth}px`;
+            text.style.top = `${Math.random() * bodyHeight}px`;
+            // 随机颜色（可选）
+            text.style.color = `rgb(${Math.random()*255},${Math.random()*255},${Math.random()*255})`;
+            document.body.appendChild(text);
+
+            // 让文字移动
+            function moveText() {
+                // 随机移动方向
+                const xSpeed = (Math.random() - 0.5) * 5;
+                const ySpeed = (Math.random() - 0.5) * 5;
+                setInterval(() => {
+                    let x = parseFloat(text.style.left) + xSpeed;
+                    let y = parseFloat(text.style.top) + ySpeed;
+                    // 超出屏幕后重置位置
+                    if (x < -50 || x > bodyWidth || y < -50 || y > bodyHeight) {
+                        x = Math.random() * bodyWidth;
+                        y = Math.random() * bodyHeight;
+                    }
+                    text.style.left = `${x}px`;
+                    text.style.top = `${y}px`;
+                }, 50);
+            }
+            moveText();
+        }
+
+        // 创建多个飘字
+        for (let i = 0; i < textCount; i++) {
+            createFloatText();
+        }
+    </script>
+</body>
+</html>
